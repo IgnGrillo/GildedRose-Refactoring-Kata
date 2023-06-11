@@ -83,6 +83,20 @@ namespace csharp
             WhenEndDay();
 
             ThenAssertQualityValue(initialQuality + 1, randomItem);
+        } 
+        
+        [Test]
+        public void IncreaseTheQualityOfAgedBrieByTwoWhenEndDayAndSellInIsLesserOrZero()
+        {
+            const int sellIn = 0;
+            const int initialQuality = 0;
+            var randomItem = GivenAnItemWith(AgedBrie, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            WhenEndDay();
+
+            ThenAssertQualityValue(initialQuality + 2, randomItem);
         }
 
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
