@@ -25,7 +25,7 @@ namespace csharp
 
             WhenEndDay();
 
-            ThenAssertSellInValueDecreased(initialSellIn, randomItem);
+            ThenAssertSellInValue(initialSellIn - 1, randomItem);
         }
         
         [Test]
@@ -39,7 +39,21 @@ namespace csharp
 
             WhenEndDay();
 
-            ThenAssertQualityValueDecreased(initialQuality, randomItem);
+            ThenAssertQualityValue(initialQuality - 1, randomItem);
+        }
+        
+        [Test]
+        public void ReduceTheQualityByTwoWhenEndDayAndSellInIsBelowOrEqualToZeroAndInitialQualityIsGreaterThanTwo()
+        {
+            const int sellIn = 0;
+            const int initialQuality = 4;
+            var randomItem = GivenAnItemWith("Random Item", sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            WhenEndDay();
+
+            ThenAssertQualityValue(initialQuality - 2, randomItem);
         }
 
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
@@ -54,10 +68,10 @@ namespace csharp
         private void WhenEndDay() =>
                 _gildedRose.EndDay();
 
-        private static void ThenAssertSellInValueDecreased(int initialSellIn, Item item) => 
-                Assert.AreEqual(initialSellIn - 1, item.SellIn);
+        private static void ThenAssertSellInValue(int expectedSellIn, Item item) => 
+                Assert.AreEqual(expectedSellIn, item.SellIn);
         
-        private static void ThenAssertQualityValueDecreased(int initialQuality, Item item) => 
-                Assert.AreEqual(initialQuality - 1, item.Quality);
+        private static void ThenAssertQualityValue(int expectedQuality, Item item) => 
+                Assert.AreEqual(expectedQuality, item.Quality);
     }
 }
