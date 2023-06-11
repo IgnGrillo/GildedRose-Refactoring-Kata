@@ -7,6 +7,7 @@ namespace csharp
     [TestFixture]
     public class GildedRoseShould
     {
+        private const string AgedBrie = "Aged Brie";
         private GildedRose _gildedRose;
 
         [SetUp]
@@ -27,7 +28,7 @@ namespace csharp
 
             ThenAssertSellInValue(initialSellIn - 1, randomItem);
         }
-        
+
         [Test]
         public void ReduceTheQualityByOneWhenEndDayAndSellInIsGreaterThanZero()
         {
@@ -70,6 +71,20 @@ namespace csharp
             ThenAssertQualityValue(initialQuality - 2, randomItem);
         }
 
+        [Test]
+        public void IncreaseTheQualityOfAgedBrieByOneWhenEndDayAndSellInIsGreaterThanZero()
+        {
+            const int sellIn = 10;
+            const int initialQuality = 0;
+            var randomItem = GivenAnItemWith(AgedBrie, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            WhenEndDay();
+
+            ThenAssertQualityValue(initialQuality + 1, randomItem);
+        }
+
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
                 item.ToList();
 
@@ -82,13 +97,13 @@ namespace csharp
         private void WhenEndDay() =>
                 _gildedRose.EndDay();
 
-        private static void ThenAssertSellInValue(int expectedSellIn, Item item) => 
+        private static void ThenAssertSellInValue(int expectedSellIn, Item item) =>
                 Assert.AreEqual(expectedSellIn, item.SellIn);
 
-        private static void ThenAssertQualityIsGreaterOrEqualThanZero(Item item) => 
+        private static void ThenAssertQualityIsGreaterOrEqualThanZero(Item item) =>
                 Assert.GreaterOrEqual(item.Quality, 0);
 
-        private static void ThenAssertQualityValue(int expectedQuality, Item item) => 
+        private static void ThenAssertQualityValue(int expectedQuality, Item item) =>
                 Assert.AreEqual(expectedQuality, item.Quality);
     }
 }
