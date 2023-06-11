@@ -4,12 +4,18 @@ namespace csharp
 {
     public class GildedRose
     {
-        private readonly IList<Item> _items;
+        private IList<Item> _items;
+
+        //For Test Purposes
+        public GildedRose() { }
         
         public GildedRose(IList<Item> items) => 
                 _items = items;
 
-        public void UpdateQuality()
+        public void SetItems(IList<Item> items) => 
+                _items = items;
+
+        public void EndDay()
         {
             for (var i = 0; i < _items.Count; i++)
             {
