@@ -8,14 +8,13 @@ namespace csharp
     public class GildedRoseShould
     {
         private const string AgedBrie = "Aged Brie";
+        private const string BackstagePasses = "Backstage passes to a TAFKAL80ETC concert";
         private Item _sulfuras = new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 };
         private GildedRose _gildedRose;
 
         [SetUp]
-        public void SetUp()
-        {
-            _gildedRose = new GildedRose();
-        }
+        public void SetUp() => 
+                _gildedRose = new GildedRose();
 
         [Test]
         public void ReduceTheSellInValueWhenEndDay()
@@ -142,6 +141,22 @@ namespace csharp
                 WhenEndDay();
 
             ThenAssertSellInValue(sulfurasInitialSellIn, _sulfuras);
+        }
+
+        [Test]
+        public void IncreaseQualityByTwoWhenWhenEndDayAndSellInIsLesserThanTenDaysButGreaterThanFiveDays()
+        {
+            const int sellIn = 10;
+            const int initialQuality = 0;
+            var amountOfDaysHappening = 5;
+            var randomItem = GivenAnItemWith(BackstagePasses, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            for (var i = 0; i < amountOfDaysHappening; i++)
+                WhenEndDay();
+
+            ThenAssertQualityValue(initialQuality + 2 * amountOfDaysHappening, randomItem);
         }
         
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
