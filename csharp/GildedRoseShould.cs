@@ -8,6 +8,7 @@ namespace csharp
     public class GildedRoseShould
     {
         private const string AgedBrie = "Aged Brie";
+        private Item _sulfuras = new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 };
         private GildedRose _gildedRose;
 
         [SetUp]
@@ -99,6 +100,20 @@ namespace csharp
             ThenAssertQualityValue(initialQuality + 2, randomItem);
         }
 
+        [TestCase(10)]
+        [TestCase(100)]
+        public void NeverDecreaseSulfurasQuality(int amountOfDaysHappening)
+        {
+            var sulfurasInitialQuality = _sulfuras.Quality;
+            IList<Item> items = GivenAListOfItemsWith(_sulfuras);
+            GivenAGildedRoseWithItems(items);
+
+            for (var i = 0; i < amountOfDaysHappening; i++)
+                WhenEndDay();
+
+            ThenAssertQualityValue(sulfurasInitialQuality, _sulfuras);
+        }
+        
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
                 item.ToList();
 
