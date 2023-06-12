@@ -13,7 +13,7 @@ namespace csharp
         private GildedRose _gildedRose;
 
         [SetUp]
-        public void SetUp() => 
+        public void SetUp() =>
                 _gildedRose = new GildedRose();
 
         [Test]
@@ -83,8 +83,8 @@ namespace csharp
             WhenEndDay();
 
             ThenAssertQualityValue(initialQuality + 1, randomItem);
-        } 
-        
+        }
+
         [Test]
         public void IncreaseTheQualityOfAgedBrieByTwoWhenEndDayAndSellInIsLesserOrZero()
         {
@@ -128,7 +128,7 @@ namespace csharp
 
             ThenAssertQualityValue(sulfurasInitialQuality, _sulfuras);
         }
-        
+
         [TestCase(10)]
         [TestCase(100)]
         public void NeverDecreaseSulfurasSellIn(int amountOfDaysHappening)
@@ -144,7 +144,8 @@ namespace csharp
         }
 
         [Test]
-        public void IncreaseQualityByTwoWhenWhenEndDayAndSellInIsLesserThanTenDaysButGreaterThanFiveDays()
+        public void
+                IncreaseBackStagePassesQualityByTwoWhenWhenEndDayAndSellInIsLesserThanTenDaysButGreaterThanFiveDays()
         {
             const int sellIn = 10;
             const int initialQuality = 0;
@@ -158,9 +159,9 @@ namespace csharp
 
             ThenAssertQualityValue(initialQuality + 2 * amountOfDaysHappening, randomItem);
         }
-        
+
         [Test]
-        public void IncreaseQualityByThreeWhenWhenEndDayAndSellInIsLesserThanFiveDaysButGreaterThanZero()
+        public void IncreaseBackStagePassesQualityByThreeWhenWhenEndDayAndSellInIsLesserThanFiveDaysButGreaterThanZero()
         {
             const int sellIn = 5;
             const int initialQuality = 0;
@@ -174,7 +175,21 @@ namespace csharp
 
             ThenAssertQualityValue(initialQuality + 3 * amountOfDaysHappening, randomItem);
         }
-        
+
+        [Test]
+        public void DecreaseBackStagePassesQualityToZeroWhenWhenEndDayAndSellInReachesZero()
+        {
+            const int sellIn = 0;
+            const int initialQuality = 1000;
+            var randomItem = GivenAnItemWith(BackstagePasses, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            WhenEndDay();
+
+            ThenAssertQualityValue(0, randomItem);
+        }
+
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
                 item.ToList();
 
