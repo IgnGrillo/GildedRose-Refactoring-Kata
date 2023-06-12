@@ -100,6 +100,22 @@ namespace csharp
             ThenAssertQualityValue(initialQuality + 2, randomItem);
         }
 
+        [TestCase(51)]
+        [TestCase(200)]
+        public void NeverIncreaseTheQualityOfAnItemAbove50WhenEndDay(int amountOfDaysHappening)
+        {
+            const int sellIn = 0;
+            const int initialQuality = 0;
+            var randomItem = GivenAnItemWith(AgedBrie, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            for (var i = 0; i < amountOfDaysHappening; i++)
+                WhenEndDay();
+
+            ThenAssertQualityValue(initialQuality + 50, randomItem);
+        }
+
         [TestCase(10)]
         [TestCase(100)]
         public void NeverDecreaseSulfurasQuality(int amountOfDaysHappening)
