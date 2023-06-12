@@ -7,8 +7,9 @@ namespace csharp
     [TestFixture]
     public class GildedRoseShould
     {
-        private const string AgedBrie = "Aged Brie";
-        private const string BackstagePasses = "Backstage passes to a TAFKAL80ETC concert";
+        private const string AgedBrieName = "Aged Brie";
+        private const string BackstagePassesName = "Backstage passes to a TAFKAL80ETC concert";
+        private const string ConjureItemName = "Conjured";
         private Item _sulfuras = new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 };
         private GildedRose _gildedRose;
 
@@ -76,7 +77,7 @@ namespace csharp
         {
             const int sellIn = 10;
             const int initialQuality = 0;
-            var randomItem = GivenAnItemWith(AgedBrie, sellIn, initialQuality);
+            var randomItem = GivenAnItemWith(AgedBrieName, sellIn, initialQuality);
             IList<Item> items = GivenAListOfItemsWith(randomItem);
             GivenAGildedRoseWithItems(items);
 
@@ -90,7 +91,7 @@ namespace csharp
         {
             const int sellIn = 0;
             const int initialQuality = 0;
-            var randomItem = GivenAnItemWith(AgedBrie, sellIn, initialQuality);
+            var randomItem = GivenAnItemWith(AgedBrieName, sellIn, initialQuality);
             IList<Item> items = GivenAListOfItemsWith(randomItem);
             GivenAGildedRoseWithItems(items);
 
@@ -105,7 +106,7 @@ namespace csharp
         {
             const int sellIn = 0;
             const int initialQuality = 0;
-            var randomItem = GivenAnItemWith(AgedBrie, sellIn, initialQuality);
+            var randomItem = GivenAnItemWith(AgedBrieName, sellIn, initialQuality);
             IList<Item> items = GivenAListOfItemsWith(randomItem);
             GivenAGildedRoseWithItems(items);
 
@@ -144,13 +145,12 @@ namespace csharp
         }
 
         [Test]
-        public void
-                IncreaseBackStagePassesQualityByTwoWhenWhenEndDayAndSellInIsLesserThanTenDaysButGreaterThanFiveDays()
+        public void IncreaseBackStagePassesQualityByTwoWhenWhenEndDayAndSellInIsLesserThanTenDaysButGreaterThanFiveDays()
         {
             const int sellIn = 10;
             const int initialQuality = 0;
             const int amountOfDaysHappening = 5;
-            var randomItem = GivenAnItemWith(BackstagePasses, sellIn, initialQuality);
+            var randomItem = GivenAnItemWith(BackstagePassesName, sellIn, initialQuality);
             IList<Item> items = GivenAListOfItemsWith(randomItem);
             GivenAGildedRoseWithItems(items);
 
@@ -166,7 +166,7 @@ namespace csharp
             const int sellIn = 5;
             const int initialQuality = 0;
             const int amountOfDaysHappening = 5;
-            var randomItem = GivenAnItemWith(BackstagePasses, sellIn, initialQuality);
+            var randomItem = GivenAnItemWith(BackstagePassesName, sellIn, initialQuality);
             IList<Item> items = GivenAListOfItemsWith(randomItem);
             GivenAGildedRoseWithItems(items);
 
@@ -181,13 +181,27 @@ namespace csharp
         {
             const int sellIn = 0;
             const int initialQuality = 1000;
-            var randomItem = GivenAnItemWith(BackstagePasses, sellIn, initialQuality);
+            var randomItem = GivenAnItemWith(BackstagePassesName, sellIn, initialQuality);
             IList<Item> items = GivenAListOfItemsWith(randomItem);
             GivenAGildedRoseWithItems(items);
 
             WhenEndDay();
 
             ThenAssertQualityValue(0, randomItem);
+        }
+        
+        [Test]
+        public void DecreaseConjureItemQualityByTwoWhenEndDay()
+        {
+            const int sellIn = 10;
+            const int initialQuality = 10;
+            var randomItem = GivenAnItemWith(ConjureItemName, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            WhenEndDay();
+
+            ThenAssertQualityValue(initialQuality - 2, randomItem);
         }
 
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>

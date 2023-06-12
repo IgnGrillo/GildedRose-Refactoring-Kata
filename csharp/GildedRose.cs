@@ -23,7 +23,11 @@ namespace csharp
                 {
                     if (_items[i].Quality > 0)
                     {
-                        if (_items[i].Name != "Sulfuras, Hand of Ragnaros")
+                        if (_items[i].Name == "Conjured")
+                        {
+                            _items[i].Quality = _items[i].Quality - 2 >= 0 ? _items[i].Quality - 2 : 0;
+                        }
+                        else if (_items[i].Name != "Sulfuras, Hand of Ragnaros")
                         {
                             _items[i].Quality -= 1;
                         }
@@ -67,11 +71,14 @@ namespace csharp
                     {
                         if (_items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
                         {
-                            if (_items[i].Quality > 0)
+                            if (_items[i].Name != "Conjured")
                             {
-                                if (_items[i].Name != "Sulfuras, Hand of Ragnaros")
+                                if (_items[i].Quality > 0)
                                 {
-                                    _items[i].Quality -= 1;
+                                    if (_items[i].Name != "Sulfuras, Hand of Ragnaros")
+                                    {
+                                        _items[i].Quality -= 1;
+                                    }
                                 }
                             }
                         }
