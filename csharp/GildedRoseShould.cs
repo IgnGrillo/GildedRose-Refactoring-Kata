@@ -148,7 +148,7 @@ namespace csharp
         {
             const int sellIn = 10;
             const int initialQuality = 0;
-            var amountOfDaysHappening = 5;
+            const int amountOfDaysHappening = 5;
             var randomItem = GivenAnItemWith(BackstagePasses, sellIn, initialQuality);
             IList<Item> items = GivenAListOfItemsWith(randomItem);
             GivenAGildedRoseWithItems(items);
@@ -157,6 +157,22 @@ namespace csharp
                 WhenEndDay();
 
             ThenAssertQualityValue(initialQuality + 2 * amountOfDaysHappening, randomItem);
+        }
+        
+        [Test]
+        public void IncreaseQualityByThreeWhenWhenEndDayAndSellInIsLesserThanFiveDaysButGreaterThanZero()
+        {
+            const int sellIn = 5;
+            const int initialQuality = 0;
+            const int amountOfDaysHappening = 5;
+            var randomItem = GivenAnItemWith(BackstagePasses, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            for (var i = 0; i < amountOfDaysHappening; i++)
+                WhenEndDay();
+
+            ThenAssertQualityValue(initialQuality + 3 * amountOfDaysHappening, randomItem);
         }
         
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
