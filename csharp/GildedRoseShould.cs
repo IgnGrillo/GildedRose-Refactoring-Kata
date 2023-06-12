@@ -203,6 +203,20 @@ namespace csharp
 
             ThenAssertQualityValue(initialQuality - 2, randomItem);
         }
+        
+        [Test]
+        public void DontReduceTheConjureItemQualityBelowZeroWhenEndDay()
+        {
+            const int sellIn = 0;
+            const int initialQuality = 1;
+            var randomItem = GivenAnItemWith(ConjureItemName, sellIn, initialQuality);
+            IList<Item> items = GivenAListOfItemsWith(randomItem);
+            GivenAGildedRoseWithItems(items);
+
+            WhenEndDay();
+
+            ThenAssertQualityIsGreaterOrEqualThanZero(randomItem);
+        }
 
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
                 item.ToList();
