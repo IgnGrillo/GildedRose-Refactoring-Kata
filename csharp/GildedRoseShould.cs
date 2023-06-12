@@ -114,6 +114,20 @@ namespace csharp
             ThenAssertQualityValue(sulfurasInitialQuality, _sulfuras);
         }
         
+        [TestCase(10)]
+        [TestCase(100)]
+        public void NeverDecreaseSulfurasSellIn(int amountOfDaysHappening)
+        {
+            var sulfurasInitialSellIn = _sulfuras.SellIn;
+            IList<Item> items = GivenAListOfItemsWith(_sulfuras);
+            GivenAGildedRoseWithItems(items);
+
+            for (var i = 0; i < amountOfDaysHappening; i++)
+                WhenEndDay();
+
+            ThenAssertSellInValue(sulfurasInitialSellIn, _sulfuras);
+        }
+        
         private static List<Item> GivenAListOfItemsWith(params Item[] item) =>
                 item.ToList();
 
